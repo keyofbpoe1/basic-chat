@@ -54,21 +54,23 @@ export default function Share({ onClose }: ShareProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center w-16 h-16 bg-gray-300 rounded-md"
+                  title="Share to Twitter"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 text-blue-500"
-                    fill="none"
+                <svg
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none" 
+                    className="w-10 h-10 text-blue-500 m-auto"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                >
+                  <path 
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M14.286 10.179L23.022 0h-2.117l-7.762 8.83L7.147 0H0l9.37 13.354L0 24h2.117l8.533-9.747 6.544 9.747h7.447M2.881 1.563h3.384l16.073 22.176h-3.384"/
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                </svg>
                 </a>
                 <a
                   href={`https://www.instagram.com/direct/new/?text=${encodeURIComponent(
@@ -77,21 +79,29 @@ export default function Share({ onClose }: ShareProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center w-16 h-16 bg-gray-300 rounded-md"
+                  title="Share to Instagram"
                 >
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 text-blue-500"
-                    viewBox="0 0 24 24"
                     fill="none"
+                    className="w-10 h-10 text-blue-500 m-auto"
+                    viewBox="0 0 24 24"
                     stroke="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
-                      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 3.75 9 8.5 9 4.75 0 8.5-3.75 8.5-9 0-3.87-3.13-7-7.5-7zm0 4c-1.66 0-3 1.34-3 3 0 1.66 1.34 3 3 3 1.66 0 3-1.34 3-3 0-1.66-1.34-3-3-3zm0 4c-1.25 0-2.45-.78-2.45-1.75 0-1.25.78-2.25 1.75-2.25 1.25 0 2.25.78 2.25 1.75 0 1.25-.78 2.25-1.75 2.25z"
-                    />
-                  </svg>
-                </a>                <a
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zM16 11.37a4 4 0 11-8 0 4 4 0 018 0zm1.5-4.87a1 1 0 100-2 1 1 0 000 2z"
+                />  
+                </svg>
+                </a>
+
+
+                  <a
                   href={`mailto:?subject=Play Fallacy Bingo with me!&body=${url}`}
                   className="flex items-center justify-center w-16 h-16 bg-gray-300 rounded-md"
+                  title="Share to Email"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -113,21 +123,22 @@ export default function Share({ onClose }: ShareProps) {
                   onClick={() => {
                     copyLink();
                     const popup = document.createElement("div");
-                    popup.className = "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded text-blue-500 opacity-0";
-                    popup.style.transition = "opacity 0.5s ease-in-out";
+                    popup.className = "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded text-blue-500 opacity-0 transition-opacity duration-500 z-50";
+                    popup.style.zIndex = "9999";
                     popup.innerText = "Link copied to clipboard!";
                     document.body.appendChild(popup);
+                    requestAnimationFrame(() => {
+                      popup.classList.add("opacity-100");
+                    });
                     setTimeout(() => {
-                      popup.style.opacity = "1";
-                    }, 10);
-                    setTimeout(() => {
-                      popup.style.opacity = "0";
+                      popup.classList.remove("opacity-100");
                     }, 2500);
                     setTimeout(() => {
                       document.body.removeChild(popup);
                     }, 3000);
                   }}
                   className="flex items-center justify-center w-16 h-16 bg-gray-300 rounded-md"
+                  title="Copy to Clipboard"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

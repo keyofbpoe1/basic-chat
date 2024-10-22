@@ -35,25 +35,41 @@ const Home = () => {
     };
 
     return (
-        <div>
-            <h1>Chat App</h1>
-            <input
-                type="text"
-                value={room}
-                onChange={(e) => setRoom(e.target.value)}
-                placeholder="Room name"
-            />
-            <select value={type} onChange={(e) => setType(e.target.value)}>
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-            </select>
-            <button onClick={createRoom}>Create Room</button>
-            <h2>Active Public Chat Rooms</h2>
-            <ul>
+        <div className="flex flex-col items-center p-8">
+            <h1 className="text-4xl font-bold mt-8">Game Rooms</h1>
+            <div className="flex items-center mt-4">
+                <input
+                    type="text"
+                    value={room}
+                    onChange={(e) => setRoom(e.target.value)}
+                    placeholder="Room name"
+                    className="p-2 border-2 border-gray-300 rounded-lg text-gray-800"
+                />
+                <select
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                    className="p-2 border-2 border-gray-300 rounded-lg ml-2 text-gray-800"
+                >
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                </select>
+            </div>
+            <button
+                onClick={createRoom}
+                className="bg-green-500 text-white font-bold mt-4 px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none"
+            >
+                Create Room
+            </button>
+            <h2 className="text-1xl font-bold mt-8">Active Public Game Rooms</h2>
+            <ul className="list-disc pl-8 mt-4">
                 {activeRooms
                     .filter(({ type }) => type === 'public')
                     .map(({ room }, index) => (
-                        <li key={index} onClick={() => router.push(`/chat/${room}`)}>
+                        <li
+                            key={index}
+                            onClick={() => router.push(`/chat/${room}`)}
+                            className="cursor-pointer"
+                        >
                             {room}
                         </li>
                     ))}

@@ -22,15 +22,8 @@ const geistMono = localFont({
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div>
+        <div className={`${inter.className} min-h-screen flex flex-col relative pb-20`}>
             <Navbar />
-            <header>
-                <h1>My App</h1>
-                <nav>
-                    <a href="/">Home</a>
-                    <a href="/about">About</a>
-                </nav>
-            </header>
             <main>{children}</main>
             <Footer />   
         </div>

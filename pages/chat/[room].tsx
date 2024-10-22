@@ -46,48 +46,69 @@ const Chatroom = () => {
     };
 
     return (
-        <div>
-            <h1>Room: {room}</h1>
+        <div className="h-screen flex flex-col">
+            <h1 className="text-3xl font-bold p-4 border-b-2">{room}</h1>
             {error ? (
-                <div>
-                    <p>{error}</p>
-                    <button onClick={() => router.push('/')}>Go back</button>
+                <div className="p-4">
+                    <p className="text-red-600">{error}</p>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={() => router.push('/')}
+                    >
+                        Go back
+                    </button>
                 </div>
             ) : !username ? (
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    setUsername(tempusername);
-                }}>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        setUsername(tempusername);
+                    }}
+                    className="p-4"
+                >
                     <input
                         type="text"
                         value={tempusername}
                         onChange={(e) => setTempUsername(e.target.value)}
                         placeholder="Enter your username"
+                        className="p-2 border-2 border-gray-300 rounded-lg text-gray-800"
                     />
-                    <button type="submit">Join Chat</button>
+                    <button
+                        type="submit"
+                        //className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className="bg-green-500 text-white font-bold mt-4 ml-2 px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none"
+                    >
+                        Join Game
+                    </button>
                 </form>
             ) : (
-                <div>
-                    <div>
-                        <h2>Users in this room ({users.length}):</h2>
-                        <ul>
+                <div className="flex flex-col items-center">
+                    <div className="p-4">
+                        <h2 className="text-2xl">Users in this room ({users.length}):</h2>
+                        <ul className="list-disc pl-8">
                             {users.map((user, index) => (
                                 <li key={index}>{user}</li>
                             ))}
                         </ul>
                     </div>
-                    <div>
+                    <div className="p-4">
                         <input
                             type="text"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             placeholder="Message"
+                            className="p-2 border-2 rounded-lg w-full"
                         />
-                        <button onClick={sendMessage}>Send</button>
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2"
+                            onClick={sendMessage}
+                        >
+                            Send
+                        </button>
                     </div>
-                    <div>
+                    <div className="p-4">
                         {messages.map((msg, index) => (
-                            <div key={index}>
+                            <div key={index} className="mb-2">
                                 <strong>{msg.username}:</strong> {msg.message}
                             </div>
                         ))}
