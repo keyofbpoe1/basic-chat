@@ -63,6 +63,7 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues })
     setBingoCard(generateBingoCard());
     setSelectedFallacies(new Set());
     setWinner(false);
+    setHoveredFallacy(null);
   };
 
   return (
@@ -74,8 +75,8 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues })
             <button
               className={`w-32 h-32 text-xs font-bold rounded p-2 ${
                 selectedFallacies.has(fallacy.name)
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-black'
+                  ? 'bg-blue-500 text-white hover:bg-blue-700 focus:outline-none'
+                  : 'bg-gray-200 text-black hover:bg-gray-500 focus:outline-none'
               }`}
               onClick={() => toggleFallacy(fallacy.name)}
               disabled={winner || disabled}
@@ -102,7 +103,7 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues })
         onClick={resetGame}
         disabled={disabled}
       >
-        New Game
+        {winner ? 'Play Again' : 'New Game'}
       </button>
     </div>
   );

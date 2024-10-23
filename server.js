@@ -62,6 +62,21 @@ app.prepare().then(() => {
             io.to(room).emit('message', { username: socket.username, message });
         });
 
+        socket.on('winnerMessage', (message) => {
+            io.in(socket.rooms[1]).emit('winnerMessage', message);
+        });
+    
+        socket.on('bingo', (winnerName) => {
+          io.in(socket.rooms[1]).emit('gameEnded', winnerName);
+        });
+    
+        socket.on('winGame', (data) => {
+          const { username, winningValues } = data;
+          console.log('Win game data:', data);
+          io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
+          io.in(socket.rooms[1]).emit('winnerAnnouncement', `${username} has won the game!`);
+        });
+
         socket.on('disconnect', () => {
             for (const room of socket.rooms) {
                 if (room !== socket.id) {

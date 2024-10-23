@@ -22,7 +22,7 @@ export default function Home() {
             <p className="mt-2">Winning fallacies: {winningValues.join(', ')}</p>
           </div>
         )}
-        <BingoCard onWin={handleWin} disabled={isGameWon} winningValues={winningValues} />
+        <BingoCard onWin={handleWin} disabled={false} winningValues={winningValues} />
       </main>
     </>
   );
