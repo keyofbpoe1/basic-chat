@@ -72,10 +72,16 @@ app.prepare().then(() => {
     
         socket.on('winGame', (data) => {
           const { username, winningValues } = data;
-          console.log('Win game data:', data);
           io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
           io.in(socket.rooms[1]).emit('winnerAnnouncement', `${username} has won the game!`);
         });
+
+        // socket.on('winGame', (data) => {
+        //   const { username, winningValues } = data;
+        //   console.log('Win game data:', data);
+        //   io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
+        //   io.in(socket.rooms[1]).emit('winnerAnnouncement', `${username} has won the game!`);
+        // });
 
         socket.on('disconnect', () => {
             for (const room of socket.rooms) {

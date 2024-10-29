@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import NewGameRoomForm from '@/app/components/newgameroomform';
 
 const socket = io();
 
@@ -35,9 +36,12 @@ const Multiplayer = () => {
     };
 
     return (
-        <div className="flex flex-col items-center p-8">
+        <main className="flex flex-col items-center p-8">
+        {/* <div className="flex flex-col items-center p-8"> */}
             <h1 className="text-4xl font-bold mt-8">Game Rooms</h1>
-            <form
+
+            <NewGameRoomForm onCreate={createRoom} />
+            {/* <form
                 onSubmit={(e) => {
                     e.preventDefault();
                     createRoom();
@@ -67,7 +71,7 @@ const Multiplayer = () => {
                 >
                     Create Room
                 </button>
-            </form>
+            </form> */}
             <h2 className="text-1xl font-bold mt-8">Active Public Game Rooms</h2>
             <ul className="list-disc pl-8 mt-4">
                 {activeRooms
@@ -82,7 +86,8 @@ const Multiplayer = () => {
                         </li>
                     ))}
             </ul>
-        </div>
+        {/* </div> */}
+        </main>
     );
 };
 
