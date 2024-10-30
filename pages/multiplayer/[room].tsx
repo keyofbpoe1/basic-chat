@@ -26,21 +26,15 @@ const Gameroom = () => {
     const [isGameWon, setIsGameWon] = useState(false);
     const [winningValues, setWinningValues] = useState<string[]>([]);
 
-    const handleWin = (winningValues: string[]) => {
-      if (socket) {
-        setIsGameWon(true);
-        socket.emit('winGame', { username, winningValues });
-        socket.emit('winnerMessage', `${username} has won the game!`);
-      }
-    };
+    
 
-    socket.on('winnerAnnouncement', (message) => {
-      setWinnerMessage(message);
-    });
+    // socket.on('winnerAnnouncement', (message) => {
+    //   setWinnerMessage(message);
+    // });
     
     // ...
     
-    {winnerMessage && <div className="text-green-600 text-xl font-bold">{winnerMessage}</div>}
+    // {winnerMessage && <div className="text-green-600 text-xl font-bold">{winnerMessage}</div>}
 
     // socket.on('winGame', (data) => {
     //   const { username, winningValues } = data;
@@ -66,20 +60,31 @@ const Gameroom = () => {
                 setUsers(users);
             });
 
-            socket.on('bingoWinner', (winnerName: string) => {
-                setWinner(winnerName);
-                setGameEnded(true);
-                setWinnerMessage(`${winnerName} has won the game!`);
-            });
+            // socket.on('bingoWinner', (winnerName: string) => {
+            //     setWinner(winnerName);
+            //     setGameEnded(true);
+            //     setWinnerMessage(`${winnerName} has won the game!`);
+            // });
 
-            socket.on('winnerMessage', (message: string) => {
-                setWinnerMessage(message);
-            });
+            // socket.on('winnerMessage', (message: string) => {
+            //     setWinnerMessage(message);
+            // });
+
+            // socket.on('gameEnded', (data: { winnerName: string, winningValues: string[] }) => {
+            //   console.log('Game ended data test:');
+            //   console.log('Game ended data:', data);
+            //   setWinner(data.winnerName);
+            //   setGameEnded(true);
+            //   setIsGameWon(true);
+            //   setWinningValues(data.winningValues);
+            // });
 
             socket.on('gameEnded', (data) => {
+                console.log('Game ended data:', data);
                 setGameEnded(true);
                 setWinner(data.winnerName);
                 setWinningValues(data.winningValues);
+                setWinnerMessage(`${data.winnerName} has won the game!\n${data.winningValues.join(', ')}`);
             });
 
             // socket.on('gameEnded', (data: { winnerName: string, winningValues: string[] }) => {
@@ -88,9 +93,9 @@ const Gameroom = () => {
             //     setWinningValues(data.winningValues);
             // });
 
-            socket.on('winnerAnnouncement', (message: string) => {
-                setWinnerMessage(message);
-            });
+            // socket.on('winnerAnnouncement', (message: string) => {
+            //     setWinnerMessage(message);
+            // });
 
             socket.on('error', (errorMessage) => {
                 setError(errorMessage);
@@ -103,12 +108,34 @@ const Gameroom = () => {
                 socket.off('error');
             };
         }
+
+        
     }, [room, username]);
 
-    const sendMessage = () => {
-        socket.emit('message', { room, message });
-        setMessage('');
+    const handleWin = (values: string[]) => {
+      if (socket && socket.connected) {
+        //setIsGameWon(true);
+        //setWinningValues(values);
+        socket.emit('winGame', { username, winningValues: values, room });
+        //socket.to(room as string).emit('gameEnded', { winnerName: username, winningValues });
+        //socket.emit('winnerAnnouncement', `${username} has won the game!`);
+      }
     };
+
+    // const handleWin = (values: string[]) => {
+    //   if (socket) {
+    //     //setIsGameWon(true);
+    //     //setWinningValues(values);
+    //     socket.emit('winGame', { username, winningValues: values });
+    //     socket.to(room as string).emit('gameEnded', { winnerName: username, winningValues });
+    //     //socket.emit('winnerAnnouncement', `${username} has won the game!`);
+    //   }
+    // };
+
+    // const sendMessage = () => {
+    //     socket.emit('message', { room, message });
+    //     setMessage('');
+    // };
 
     
 
@@ -177,14 +204,12 @@ const Gameroom = () => {
       </div>
    
       {showShareModal && <Share onClose={() => setShowShareModal(false)} />}
-        
-        // ...
-        
+                
         {winnerMessage && <div className="text-green-600 text-xl font-bold">{winnerMessage}</div>}
     
                     <BingoCard
                       onWin={handleWin}
-                      disabled={false} // provide the disabled property
+                      disabled={gameEnded} // provide the disabled property
                       winningValues={[]} // provide the winningValues property
                     />
                     

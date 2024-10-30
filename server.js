@@ -69,12 +69,44 @@ app.prepare().then(() => {
         socket.on('bingo', (winnerName) => {
           io.in(socket.rooms[1]).emit('gameEnded', winnerName);
         });
-    
+
         socket.on('winGame', (data) => {
-          const { username, winningValues } = data;
-          io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
-          io.in(socket.rooms[1]).emit('winnerAnnouncement', `${username} has won the game!`);
+          const { username, winningValues, room } = data;
+          console.log(`Received winGame event from room ${room}`);
+          const socketsInRoom = io.sockets.adapter.rooms.get(room);
+          if (!socketsInRoom) {
+            console.log(`No sockets found in room ${room}, not emitting gameEnded event`);
+            return;
+          }
+          const socketsInRoomSet = new Set(socketsInRoom);
+          console.log(`Found ${socketsInRoomSet.size} sockets in room ${room}`);
+          if (socketsInRoomSet.size > 0) {
+            io.to(room).emit('gameEnded', { winnerName: username, winningValues });
+            console.log(`Emitted gameEnded event to room ${room}`);
+          } else {
+            console.log(`No sockets found in room ${room}, not emitting gameEnded event`);
+          }
         });
+
+        // socket.on('winGame', (data) => {
+        //   const { username, winningValues, room } = data;
+        //   console.log('Win game data:', data);
+        //   io.to(room).emit('gameEnded', { winnerName: username, winningValues });
+        // });
+
+        // socket.on('winGame', (data) => {            
+        //   const { username, winningValues, room } = data;
+        //   console.log('Win game data:', data);          
+          
+        //   io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
+        //   //io.in(socket.rooms[room]).emit('winnerMessage', `${username} has won the game!`);
+        // });
+    
+        // socket.on('winGame', (data) => {
+        //   const { username, winningValues } = data;
+        //   io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
+        //   io.in(socket.rooms[1]).emit('winnerAnnouncement', `${username} has won the game!`);
+        // });
 
         // socket.on('winGame', (data) => {
         //   const { username, winningValues } = data;
