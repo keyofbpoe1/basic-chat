@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-center">
+      <main className="flex flex-col items-center justify-center">
         {isGameWon && (
           <div className="text-center mb-4">
             <h1 className="text-3xl font-bold">You Win!</h1>

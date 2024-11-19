@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Head>
                 <title>Fallacy Bingo!</title>
                 <meta name="description" content="Play bingo with logical fallacies!" />
-                <link rel="icon" href="../favicon.ico" />
+                <link rel="icon" href="../exclamation-16.ico" />
             </Head>
             <Layout>
                 <Component {...pageProps} />

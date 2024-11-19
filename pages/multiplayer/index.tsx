@@ -36,57 +36,27 @@ const Multiplayer = () => {
     };
 
     return (
-        <main className="flex flex-col items-center p-8">
-        {/* <div className="flex flex-col items-center p-8"> */}
-            <h1 className="text-4xl font-bold mt-8">Game Rooms</h1>
-
-            <NewGameRoomForm onCreate={createRoom} />
-            {/* <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    createRoom();
-                }}
-                className="flex flex-col items-center mt-4"
-            >
-                <div className="flex items-center" style={{ alignItems: 'baseline' }}>
-                    <input
-                        type="text"
-                        value={room}
-                        onChange={(e) => setRoom(e.target.value)}
-                        placeholder="Room name"
-                        className="p-2 border-2 border-gray-300 rounded-lg text-gray-800 mr-2"
-                    />
-                    <select
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                        className="p-2 border-2 border-gray-300 rounded-lg mt-2 text-gray-800"
-                    >
-                        <option value="public">Public</option>
-                        <option value="private">Private</option>
-                    </select>
+        <main className="flex flex flex-col">
+            <h1 className="text-3xl font-bold p-4 border-b-2">Game Rooms</h1>
+            <div className="flex">
+                <div className="w-1/4 ml-4">
+                    <h2 className="text-1xl font-bold mt-8">Active Public Game Rooms</h2>
+                    <ul className="list-disc pl-8 mt-4">
+                        {activeRooms
+                            .filter(({ type }) => type === 'public')
+                            .map(({ room }, index) => (
+                                <li key={index} onClick={() => router.push(`/multiplayer/${room}`)} className="cursor-pointer">
+                                    {room}
+                                </li>
+                            ))}
+                    </ul>
                 </div>
-                <button
-                    type="submit"
-                    className="bg-green-500 text-white font-bold mt-4 px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none"
-                >
-                    Create Room
-                </button>
-            </form> */}
-            <h2 className="text-1xl font-bold mt-8">Active Public Game Rooms</h2>
-            <ul className="list-disc pl-8 mt-4">
-                {activeRooms
-                    .filter(({ type }) => type === 'public')
-                    .map(({ room }, index) => (
-                        <li
-                            key={index}
-                            onClick={() => router.push(`/multiplayer/${room}`)}
-                            className="cursor-pointer"
-                        >
-                            {room}
-                        </li>
-                    ))}
-            </ul>
-        {/* </div> */}
+                <div className="w-1/2 mt-4">
+                    <NewGameRoomForm onCreate={createRoom} />
+                </div>
+            </div>
+            
+            
         </main>
     );
 };

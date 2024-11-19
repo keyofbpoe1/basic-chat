@@ -17,16 +17,6 @@ const NewGameRoomForm = ({ onCreate }: { onCreate: CreateRoomFn }) => {
     const router = useRouter();
     const [room, setRoom] = useState('');
     const [type, setType] = useState('public');
-    //const [activeRooms, setActiveRooms] = useState<{ room: string; type: string }[]>([]);
-//   const [roomName, setRoomName] = useState('');
-//   const [roomType, setRoomType] = useState<RoomType>('public');
-
-//   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-//     onCreate({ roomName, roomType });
-//     setRoomName('');
-//     setRoomType('public');
-//   };
 
   const createRoom = () => {
     socket.emit('createRoom', { room, type });
@@ -41,7 +31,8 @@ const NewGameRoomForm = ({ onCreate }: { onCreate: CreateRoomFn }) => {
         }}
         className="flex flex-col items-center mt-4"
     >
-        <div className="flex items-center" style={{ alignItems: 'baseline' }}>
+        <h2 className="text-xl font-bold mb-4">Create a New Game Room</h2>
+        <div className="flex items-center" style={{ alignItems: 'baseline' }}>  
             <input
                 type="text"
                 value={room}
