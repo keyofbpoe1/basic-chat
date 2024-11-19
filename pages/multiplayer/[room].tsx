@@ -45,6 +45,7 @@ const Gameroom = () => {
         setGameEnded(false);
         setWinner(null);
         setWinnerMessage(null);
+        setWinningValues([]);
         //socket?.emit('newGame', roomId);
       };
 
@@ -211,6 +212,7 @@ const Gameroom = () => {
                       onWin={handleWin}
                       disabled={gameEnded} // provide the disabled property
                       winningValues={[]} // provide the winningValues property
+                      onrestart={startNewGame}
                     />
                     
         </div>

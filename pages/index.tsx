@@ -13,6 +13,11 @@ export default function Home() {
     setWinningValues(values);
   };
 
+  const startNewGame = () => {
+    setIsGameWon(false);
+    setWinningValues([]);
+  };
+
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center">
@@ -22,7 +27,7 @@ export default function Home() {
             <p className="mt-2">Winning fallacies: {winningValues.join(', ')}</p>
           </div>
         )}
-        <BingoCard onWin={handleWin} disabled={false} winningValues={winningValues} />
+        <BingoCard onWin={handleWin} disabled={false} winningValues={winningValues} onrestart={startNewGame} />
       </main>
     </>
   );

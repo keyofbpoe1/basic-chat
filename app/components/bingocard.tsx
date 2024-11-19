@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import fallacies from '../../public/data/fallacies.json';
+import { on } from 'events';
 
 interface BingoCardProps {
   onWin: (winningValues: string[]) => void;
   disabled: boolean;
   winningValues: string[];
+  onrestart: () => void;
 }
 
 const generateBingoCard = () => {
@@ -12,7 +14,7 @@ const generateBingoCard = () => {
   return shuffled.slice(0, 25);
 };
 
-const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues }) => {
+const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues, onrestart }) => {
   const [bingoCard, setBingoCard] = useState<typeof fallacies>([]);
   const [selectedFallacies, setSelectedFallacies] = useState<Set<string>>(new Set());
   const [winner, setWinner] = useState(false);
@@ -64,6 +66,7 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues })
     setSelectedFallacies(new Set());
     setWinner(false);
     setHoveredFallacy(null);
+    {onrestart ? onrestart() : null};
   };
 
   return (
@@ -75,8 +78,8 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues })
             <button
               className={`w-32 h-32 text-xs font-bold rounded p-2 ${
                 selectedFallacies.has(fallacy.name)
-                  ? 'bg-blue-500 text-white hover:bg-blue-700 focus:outline-none'
-                  : 'bg-gray-200 text-black hover:bg-gray-500 focus:outline-none'
+                  ? 'bg-blue-500 text-white hover:bg-blue-700 focus:outline-none disabled:bg-blue-500 text-white'
+                  : 'bg-gray-200 text-black hover:bg-gray-500 focus:outline-none disabled:bg-gray-200 text-black'
               }`}
               onClick={() => toggleFallacy(fallacy.name)}
               disabled={winner || disabled}
@@ -101,9 +104,9 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues })
       <button
         className="bg-green-500 text-white font-bold px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none"
         onClick={resetGame}
-        disabled={disabled}
+        //disabled={disabled}
       >
-        {winner ? 'Play Again' : 'New Game'}
+        {(winner || disabled) ? 'Play Again' : 'New Game'}
       </button>
     </div>
   );
