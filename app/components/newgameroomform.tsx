@@ -26,7 +26,7 @@ type CreateRoomFn = (data: RoomData) => void;
  * The function should emit a 'createRoom' event to the server with the room data.
  * @returns {JSX.Element} - a form component with input fields and a submit button.
  */
-const NewGameRoomForm = ({ onCreate }: { onCreate: CreateRoomFn }) => {
+const NewGameRoomForm = ({ }: { onCreate: CreateRoomFn }) => {
     const router = useRouter();
     const [room, setRoom] = useState('');
     const [type, setType] = useState('public');

@@ -23,14 +23,14 @@ const Gameroom = () => {
   const { room } = router.query;
   const [showShareModal, setShowShareModal] = useState(false);
   const [username, setUsername] = useState('');
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<{ username: string; message: string }[]>([]);
+  //const [message, setMessage] = useState('');
+  //const [messages, setMessages] = useState<{ username: string; message: string }[]>([]);
   const [users, setUsers] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [winner, setWinner] = useState<string | null>(null);
   const [gameEnded, setGameEnded] = useState(false);
   const [winnerMessage, setWinnerMessage] = useState< string | null>(null);
-  const [winningValues, setWinningValues] = useState<string[]>([]);
+  const [, setWinningValues] = useState<string[]>([]);
 
   useEffect(() => {
     if (room && username) {

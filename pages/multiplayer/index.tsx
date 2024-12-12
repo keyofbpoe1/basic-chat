@@ -14,8 +14,8 @@ const socket = io();
      */
 const Multiplayer = () => {
     const router = useRouter();
-    const [room, setRoom] = useState('');
-    const [type, setType] = useState('public');
+    const [room] = useState('');
+    const [type] = useState('public');
     const [activeRooms, setActiveRooms] = useState<{ room: string; type: string }[]>([]);
 
     useEffect(() => {

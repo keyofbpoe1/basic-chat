@@ -12,7 +12,7 @@ import Share from '@/app/components/share';
  * @param {string} [props.className] - the class name to apply to the footer
  * @returns {React.ReactElement}
  */
-export default function Footer({ className }: { className?: string }) {
+export default function Footer({ }: { className?: string }) {
   const [showShareModal, setShowShareModal] = React.useState(false);
 
 

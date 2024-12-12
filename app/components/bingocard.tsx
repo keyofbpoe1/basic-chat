@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import fallacies from '../../public/data/fallacies.json';
-import { on } from 'events';
 
 interface BingoCardProps {
   onWin: (winningValues: string[]) => void;
@@ -43,7 +42,7 @@ const generateBingoCard = () => {
    * 
    * @returns {JSX.Element} A JSX element representing the bingo card.
    */
-const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues, onrestart }) => {
+const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, onrestart }) => {
   const [bingoCard, setBingoCard] = useState<typeof fallacies>([]);
   const [selectedFallacies, setSelectedFallacies] = useState<Set<string>>(new Set());
   const [winner, setWinner] = useState(false);
