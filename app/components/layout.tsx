@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from './navbar';
 import Footer from './footer';
 
-import localFont from "next/font/local";
+//import localFont from "next/font/local";
 import '@/app/globals.css';
 import { Inter } from "next/font/google";
 

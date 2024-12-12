@@ -122,7 +122,9 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, onrestart }) => 
     setSelectedFallacies(new Set());
     setWinner(false);
     setHoveredFallacy(null);
-    {onrestart ? onrestart() : null};
+    if (onrestart) {
+      onrestart();
+    }
   };
 
   return (
