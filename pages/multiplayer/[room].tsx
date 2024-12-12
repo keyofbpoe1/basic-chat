@@ -8,6 +8,16 @@ import UsernameForm from '@/app/components/usernameform';
 
 const socket = io();
 
+  /**
+   * A gameroom component for a bingo game. It displays a bingo card, a list
+   * of players, and a share button. The component also handles emitting events
+   * for joining and leaving the room, game ended, and error messages.
+   *
+   * @param {string} room - The room code for the game.
+   * @param {string} username - The username of the player.
+   *
+   * @returns {JSX.Element} - The gameroom component.
+   */
 const Gameroom = () => {
   const router = useRouter();
   const { room } = router.query;
@@ -51,12 +61,24 @@ const Gameroom = () => {
     }
   }, [room, username]);
 
+  /**
+   * Handles the win event by emitting the winGame event to the server.
+   *
+   * @param {string[]} values - The winning values.
+   */
   const handleWin = (values: string[]) => {
     if (socket && socket.connected) {
       socket.emit('winGame', { username, winningValues: values, room });
     }
   };
 
+  /**
+   * Starts a new game by resetting the game state.
+   *
+   * This function is called when the user clicks the "New Game" button.
+   * It resets the game state by setting `gameEnded` to false, clearing the
+   * winner, winner message, and winning values.
+   */
   const startNewGame = () => {
     setGameEnded(false);
     setWinner(null);
@@ -64,6 +86,10 @@ const Gameroom = () => {
     setWinningValues([]);
   };
 
+  /**
+   * Handles the share button click event by setting the showShareModal state
+   * to true, which displays the share modal.
+   */
   const handleShareClick = () => {
     setShowShareModal(true);
   };

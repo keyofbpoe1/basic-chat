@@ -1,3 +1,12 @@
+/**
+ * Main server file for the bingo chat app.
+ * 
+ * This file sets up the express server and socket.io
+ * and defines the endpoints for the app.
+ * 
+ * @author Andrew Hogan
+ */
+
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -7,9 +16,26 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+/**
+ * Set of active rooms. 
+ * 
+ * Each room is identified by a unique string.
+ */
 const activeRooms = new Set();
+
+/**
+ * Maps room names to the users in the room.
+ * 
+ * Each room is identified by a unique string and the value is an array of usernames.
+ */
 const roomUsers = {};
-const roomTypes = {}; // To store room types (public/private)
+
+/**
+ * Maps room names to the type of the room. 
+ * 
+ * Each room is identified by a unique string and the value is either 'public' or 'private'.
+ */
+const roomTypes = {};
 
 app.prepare().then(() => {
     const server = express();
@@ -18,6 +44,8 @@ app.prepare().then(() => {
 
     io.on('connection', (socket) => {
         console.log('a user connected');
+
+        // Listen for and handle socket events such as room creation, joining, and leaving
 
         socket.on('createRoom', ({ room, type }) => {
             socket.join(room);
@@ -29,10 +57,6 @@ app.prepare().then(() => {
         });
 
         socket.on('joinRoom', ({ room, username }) => {
-            // if (roomTypes[room] === 'private' && !roomUsers[room].includes(username)) {
-            //     socket.emit('error', 'You do not have access to this private room.');
-            //     return;
-            // }
             socket.join(room);
             socket.username = username;
             roomUsers[room] = roomUsers[room] || [];
@@ -58,18 +82,23 @@ app.prepare().then(() => {
             console.log(`${username} left room ${room}`);
         });
 
+        // Send a message to all clients in the room
         socket.on('message', ({ room, message }) => {
             io.to(room).emit('message', { username: socket.username, message });
         });
 
+        // Send a message to all clients in the room that a game has ended
         socket.on('winnerMessage', (message) => {
             io.in(socket.rooms[1]).emit('winnerMessage', message);
         });
-    
+
+        // Send a message to all clients in the room that a game has ended
         socket.on('bingo', (winnerName) => {
           io.in(socket.rooms[1]).emit('gameEnded', winnerName);
         });
 
+        // Send a message to all clients in the room that a game has ended
+        // and the winner's name and winning values
         socket.on('winGame', (data) => {
           const { username, winningValues, room } = data;
           console.log(`Received winGame event from room ${room}`);
@@ -88,33 +117,7 @@ app.prepare().then(() => {
           }
         });
 
-        // socket.on('winGame', (data) => {
-        //   const { username, winningValues, room } = data;
-        //   console.log('Win game data:', data);
-        //   io.to(room).emit('gameEnded', { winnerName: username, winningValues });
-        // });
-
-        // socket.on('winGame', (data) => {            
-        //   const { username, winningValues, room } = data;
-        //   console.log('Win game data:', data);          
-          
-        //   io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
-        //   //io.in(socket.rooms[room]).emit('winnerMessage', `${username} has won the game!`);
-        // });
-    
-        // socket.on('winGame', (data) => {
-        //   const { username, winningValues } = data;
-        //   io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
-        //   io.in(socket.rooms[1]).emit('winnerAnnouncement', `${username} has won the game!`);
-        // });
-
-        // socket.on('winGame', (data) => {
-        //   const { username, winningValues } = data;
-        //   console.log('Win game data:', data);
-        //   io.in(socket.rooms[1]).emit('gameEnded', { winnerName: username, winningValues });
-        //   io.in(socket.rooms[1]).emit('winnerAnnouncement', `${username} has won the game!`);
-        // });
-
+        // When a client disconnects, remove them from the room and send an update to the other clients
         socket.on('disconnect', () => {
             for (const room of socket.rooms) {
                 if (room !== socket.id) {
@@ -137,21 +140,26 @@ app.prepare().then(() => {
         });
     });
 
+    // Get a list of active rooms
     server.get('/api/rooms', (req, res) => {
         res.json({ rooms: Array.from(activeRooms).map(room => ({ room, type: roomTypes[room] })) });
     });
 
+    // Redirect GET requests for /chat/:room to the chat page
     server.get('/chat/:room', (req, res) => {
         return app.render(req, res, '/chat/[room]', { room: req.params.room });
     });
 
+    // Handle all other requests with Next.js
     server.all('*', (req, res) => {
         return handle(req, res);
     });
 
+    // Start the server
     const PORT = process.env.PORT || 3000;
     httpServer.listen(PORT, (err) => {
         if (err) throw err;
         console.log(`> Ready on http://localhost:${PORT}`);
     });
 });
+

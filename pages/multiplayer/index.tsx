@@ -5,6 +5,13 @@ import NewGameRoomForm from '@/app/components/newgameroomform';
 
 const socket = io();
 
+    /**
+     * Multiplayer page component that displays a list of active public game rooms and a form to create a new room.
+     *
+     * The component fetches the list of active rooms from the server and updates it in real-time as new rooms are created.
+     * The user can enter a room name and create a new room, at which point they will be redirected to that room.
+     * The user can also click on an existing room name to join that room.
+     */
 const Multiplayer = () => {
     const router = useRouter();
     const [room, setRoom] = useState('');
@@ -30,6 +37,10 @@ const Multiplayer = () => {
         };
     }, []);
 
+/**
+ * Emits a 'createRoom' event to the server with the specified room name and type,
+ * then navigates the user to the newly created room.
+ */
     const createRoom = () => {
         socket.emit('createRoom', { room, type });
         router.push(`/multiplayer/${room}`);

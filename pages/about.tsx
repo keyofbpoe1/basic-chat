@@ -1,3 +1,12 @@
+/**
+ * The About page component.
+ *
+ * This component renders a page with a single heading and a centered paragraph
+ * of text. The text includes links to the GitHub profile of the author and the
+ * GitHub repository for the Fallacy Bingo game.
+ *
+ * @returns {JSX.Element} The About page component.
+ */
 export default function AboutPage() {
     return (
       <main className="flex flex flex-col">
@@ -10,7 +19,7 @@ export default function AboutPage() {
             </a>
             . It is a Next.js application that uses the{" "}
             <a
-                href="https://github.com/keyofbpoe1/basic-chat"
+                href="https://github.com/keyofbpoe1/fallacy-bingo"
                 className="text-blue-600"
             >
                 Fallacy Bingo

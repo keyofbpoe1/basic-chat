@@ -13,11 +13,31 @@ type RoomData = {
 
 type CreateRoomFn = (data: RoomData) => void;
 
+/**
+ * A form component for creating a new game room.
+ *
+ * The form has two input fields - a text input for the room name and a
+ * select input for the room type (public or private). When the form is
+ * submitted, the component emits a 'createRoom' event to the server with
+ * the room data, and then redirects the user to the newly created room.
+ *
+ * @param {{ onCreate: CreateRoomFn }} props
+ * @prop {CreateRoomFn} onCreate - a callback function to be called when the form is submitted.
+ * The function should emit a 'createRoom' event to the server with the room data.
+ * @returns {JSX.Element} - a form component with input fields and a submit button.
+ */
 const NewGameRoomForm = ({ onCreate }: { onCreate: CreateRoomFn }) => {
     const router = useRouter();
     const [room, setRoom] = useState('');
     const [type, setType] = useState('public');
 
+  /**
+   * Sends a 'createRoom' event to the server with the room data, and then redirects the user to the newly created room.
+   *
+   * This function is called when the form is submitted. It uses the socket.io client to emit a 'createRoom'
+   * event to the server with the room data, and then redirects the user to the newly created room using the
+   * Next.js router.
+   */
   const createRoom = () => {
     socket.emit('createRoom', { room, type });
     router.push(`/multiplayer/${room}`);

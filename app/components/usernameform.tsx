@@ -1,8 +1,28 @@
 import React, { useState } from 'react';
 
+/**
+ * UsernameForm component allows the user to input and submit their username.
+ *
+ * This component renders a form with a text input field and a submit button.
+ * When the form is submitted, it calls the `setUsername` function passed via props
+ * with the current input value and then clears the input field.
+ *
+ * @param {Object} props
+ * @param {function} props.setUsername - A function to set the username, called with
+ *                                        the input value upon form submission.
+ *
+ * @returns {JSX.Element} A form element with an input field and a submit button.
+ */
 export default function UsernameForm({ setUsername }: { setUsername: (username: string) => void }) {
     const [inputValue, setInputValue] = useState('');
 
+    /**
+     * Handles the form submission by preventing the default event behavior,
+     * setting the username using the `setUsername` function passed via props,
+     * and clearing the input field.
+     *
+     * @param {React.FormEvent<HTMLFormElement>} event - The form event.
+     */
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setUsername(inputValue);

@@ -3,6 +3,13 @@ import Link from 'next/link';
 import React from 'react';
 import Layout from './components/layout';
 
+/**
+ * A custom 404 page that displays a friendly error message when the user requests a
+ * non-existent page.
+ *
+ * The page is centered and has a red 404 title, a brief message explaining the error,
+ * and a link back to the home page.
+ */
 const Custom404 = () => {
   return (
     <Layout>

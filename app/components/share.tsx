@@ -4,6 +4,13 @@ export interface ShareProps {
   onClose: () => void;
 }
 
+/**
+ * A modal dialog that allows users to share the current Fallacy Bingo game.
+ *
+ * @param {Object} props
+ * @param {function} props.onClose - called when the dialog is closed
+ * @returns {React.ReactElement}
+ */
 export default function Share({ onClose }: ShareProps) {
   const url = typeof window !== "undefined" ? window.location.href : "";
   const text = "Play Fallacy Bingo with me!";
@@ -11,6 +18,9 @@ export default function Share({ onClose }: ShareProps) {
     url
   )}&text=${encodeURIComponent(text)}`;
 
+  /**
+   * Copies the current URL to the clipboard.
+   */
   const copyLink = () => {
     navigator.clipboard.writeText(url);
   };

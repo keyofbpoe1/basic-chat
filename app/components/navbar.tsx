@@ -1,6 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 
+/**
+ * A component that renders the navigation bar at the top of the page.
+ *
+ * The navbar contains links to the home page, the multiplayer page, and
+ * the about page. It does not contain a link to the chat page.
+ *
+ * The navbar is a dark gray color with white text and is centered on the
+ * page.
+ */
 const Navbar: React.FC = () => {
   return (
     <nav className="bg-gray-800 p-4">

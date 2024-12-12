@@ -5,6 +5,18 @@ import io from 'socket.io-client';
 
 const socket = io();
 
+    /**
+     * Chatroom component for displaying a chat room
+     *
+     * This component displays a chat room with the following features:
+     * - Displays a list of users in the room
+     * - Allows users to enter a message and send it to the room
+     * - Displays all messages sent to the room
+     * - Allows users to leave the room
+     *
+     * The component uses the Socket.IO library to communicate with the server,
+     * which is responsible for managing the chat rooms and messages.
+     */
 const Chatroom = () => {
     const router = useRouter();
     const { room } = router.query;
@@ -40,6 +52,10 @@ const Chatroom = () => {
         }
     }, [room, username]);
 
+/**
+ * Sends a 'message' event to the server with the contents of the `message` state variable
+ * and the current room. After emitting the message, the `message` state variable is cleared.
+ */
     const sendMessage = () => {
         socket.emit('message', { room, message });
         setMessage('');

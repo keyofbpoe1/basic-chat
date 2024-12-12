@@ -7,6 +7,20 @@ import Link from 'next/link';
 
 const socket = io();
 
+    /**
+     * The Chatroom component provides a UI for creating and joining chat rooms,
+     * as well as sending and receiving messages in those rooms.
+     *
+     * The component displays a list of existing chat rooms, which is updated
+     * in real-time as new rooms are created. The user can enter a room name
+     * and create a new room, at which point they will be redirected to that
+     * room. The user can also enter a message and send it to the room, at
+     * which point it will be displayed in the room to all users who have
+     * joined the room.
+     *
+     * The component uses the Socket.IO library to communicate with the
+     * server, which is responsible for managing the chat rooms and messages.
+     */
 const Chatroom = () => {
     const router = useRouter();
     const [room, setRoom] = useState('');
@@ -36,12 +50,23 @@ const Chatroom = () => {
         };
     }, []);
 
+    /**
+     * Sends a 'createRoom' event to the server to create a new room
+     * with the name specified in the 'room' state variable. The user
+     * is then redirected to the newly created room. The room is added
+     * to the list of existing rooms.
+     */
     const createRoom = () => {
         socket.emit('createRoom', room);
         router.push(`/chat/${room}`);
         setRooms((prevRooms) => [...prevRooms, room]);
     };
 
+    /**
+     * Sends a 'message' event to the server with the contents of the
+     * `message` state variable. The `message` state variable is then
+     * cleared.
+     */
     const sendMessage = () => {
         socket.emit('message', message);
         setMessage('');

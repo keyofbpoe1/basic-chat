@@ -9,11 +9,40 @@ interface BingoCardProps {
   onrestart: () => void;
 }
 
+/**
+ * Generates a bingo card by randomly shuffling the fallacies data
+ * and selecting the first 25 items to form the card.
+ * 
+ * @returns {Array} An array of 25 fallacy objects representing a bingo card.
+ */
 const generateBingoCard = () => {
   const shuffled = [...fallacies].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, 25);
 };
 
+  /**
+   * A React component that generates a bingo card by randomly shuffling
+   * the fallacies data and selecting the first 25 items to form the card.
+   * 
+   * The component provides a button for each fallacy on the card, which
+   * can be clicked to select or deselect the fallacy. The component also
+   * displays a hover-over text for each fallacy, which shows the definition
+   * of the fallacy. If the user selects a winning combination of fallacies,
+   * the component displays a congratulatory message and a button to play
+   * again. If the user is not the winner, the component displays a button
+   * to generate a new game.
+   * 
+   * @param {{ onWin: (winningValues: string[]) => void, disabled: boolean, winningValues: string[], onrestart: () => void }} props
+   * The component accepts the following props:
+   * - onWin: a function that is called when the user wins the game, which
+   *   takes an array of the winning fallacy names as an argument.
+   * - disabled: a boolean indicating whether the game is disabled or not.
+   * - winningValues: an array of the winning fallacy names.
+   * - onrestart: a function that is called when the user clicks the button
+   *   to play again.
+   * 
+   * @returns {JSX.Element} A JSX element representing the bingo card.
+   */
 const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues, onrestart }) => {
   const [bingoCard, setBingoCard] = useState<typeof fallacies>([]);
   const [selectedFallacies, setSelectedFallacies] = useState<Set<string>>(new Set());
@@ -24,6 +53,17 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues, o
     setBingoCard(generateBingoCard());
   }, []);
 
+  /**
+   * Toggles a fallacy in the selected fallacies set.
+   * 
+   * If the fallacy is already in the set, it is removed.
+   * If the fallacy is not in the set, it is added.
+   * 
+   * After toggling the fallacy, the component checks if the user has won
+   * the game by calling the `checkWinner` function.
+   * 
+   * @param {string} fallacy The name of the fallacy to toggle.
+   */
   const toggleFallacy = (fallacy: string) => {
     const newSelectedFallacies = new Set(selectedFallacies);
     if (selectedFallacies.has(fallacy)) {
@@ -35,6 +75,16 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues, o
     checkWinner(newSelectedFallacies);
   };
 
+/**
+ * Checks if the current selection of fallacies forms a winning combination.
+ *
+ * The function iterates through predefined winning combinations and checks
+ * if all fallacies in any combination are present in the selected set.
+ * If a winning combination is found, it sets the winner state to true
+ * and triggers the onWin callback with the names of the winning fallacies.
+ *
+ * @param {Set<string>} selected - A set of selected fallacy names.
+ */
   const checkWinner = (selected: Set<string>) => {
     const winningCombinations = [
       [0, 1, 2, 3, 4],
@@ -61,6 +111,13 @@ const BingoCard: React.FC<BingoCardProps> = ({ onWin, disabled, winningValues, o
     }
   };
 
+  /**
+   * Resets the game state by generating a new bingo card, clearing the
+   * selected fallacies set, and resetting the winner state.
+   *
+   * If the `onrestart` callback is provided, it is called after resetting
+   * the game state.
+   */
   const resetGame = () => {
     setBingoCard(generateBingoCard());
     setSelectedFallacies(new Set());

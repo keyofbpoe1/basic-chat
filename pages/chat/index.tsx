@@ -4,6 +4,14 @@ import io from 'socket.io-client';
 
 const socket = io();
 
+    /**
+     * A Next.js page component that displays a form to create a new
+     * chat room and a list of active public chat rooms. When the form is
+     * submitted, the component creates a new room and redirects the user
+     * to the newly created room. The component also listens for the
+     * 'activeRooms' event from the server, which is emitted when a new
+     * room is created, and updates the list of active rooms accordingly.
+     */
 const Home = () => {
     const router = useRouter();
     const [room, setRoom] = useState('');
@@ -29,6 +37,10 @@ const Home = () => {
         };
     }, []);
 
+    /**
+     * Emits a 'createRoom' event to the server with the room name and type,
+     * and then redirects the user to the newly created room.
+     */
     const createRoom = () => {
         socket.emit('createRoom', { room, type });
         router.push(`/chat/${room}`);
